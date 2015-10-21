@@ -1,0 +1,41 @@
+{
+  "name": "Nprogress",
+  "version": "1.0",
+  "description": "Simple AJAX progress bar used in dynamic actions",
+  "keywords": [
+    "progress",
+    "dynamic action",
+    "AJAX"
+  ],
+  "homepage": "https://github.com/drumbeg/apex-nprogress",
+  "bugs": {
+    "url": "https://github.com/drumbeg/apex-nprogress",
+    "email": "dave@supamu.co.uk"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "David Lawton",
+    "email": "dave@supamu.co.uk",
+    "url": "http://www.modernapex.co.uk"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/drumbeg/apex-nprogress"
+  },
+  "oracle": {
+    "versions": [
+      "11.2.0.1"
+    ],
+    "apex": {
+      "versions": [
+        "5.0.0"
+      ],
+      "plugin": {
+        "internalName": "apex.modern.nprogress",
+        "type": "dynamic action",
+        "demo": "",
+        "previewImage": ""
+      }
+    }
+  }
+}
