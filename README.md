@@ -5,7 +5,9 @@ http://ricostacruz.com/nprogress/
 
 ## Installation
 * Import "apex_nprogress_import.sql" via APEX application import.
+
  or
+
 * Run "apex_nprogress_import.sql" via SQLPlus whilst connected to APEX parsing schema.
  
 
