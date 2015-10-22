@@ -34,7 +34,7 @@
       "plugin": {
         "internalName": "apex.modern.nprogress",
         "type": "dynamic action",
-        "demo": "",
+        "demo": "https://apex.oracle.com/pls/apex/f?p=59851:LOGIN_DESKTOP",
         "previewImage": ""
       }
     }
