@@ -1,7 +1,7 @@
 {
   "name": "Nprogress",
   "version": "1.0",
-  "description": "Simple AJAX progress bar used in dynamic actions",
+  "description": "Minimalistic progress bar managed by dynamic actions",
   "keywords": [
     "progress",
     "dynamic action",
