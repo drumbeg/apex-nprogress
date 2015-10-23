@@ -90,38 +90,69 @@ wwv_flow_api.create_plugin (
 '                          p_plugin         IN apex_plugin.t_plugin)'||unistr('\000a')||
 '  RETURN apex_plugin.t_dynamic_action_render_result IS'||unistr('\000a')||
 '  --'||unistr('\000a')||
-'  v_start_stop        VARCHAR2(100) := p_dynamic_action.attribute_01;'||unistr('\000a')||
+'  v_start_stop     VARCHAR2(5) := p_dynamic_action.attribute_01;'||unistr('\000a')||
+'  v_show_spinner   VARCHAR2(5) := p_dynamic_action.attribute_02;'||unistr('\000a')||
+'  v_parent_element VARCHAR2(50) := NVL(p_dynamic_action.attribute_'||
+'03, ''body'');'||unistr('\000a')||
 '  --'||unistr('\000a')||
 '  l_result apex_plugin.t_dynamic_action_render_result;'||unistr('\000a')||
 '  --'||unistr('\000a')||
-'  v_nprogress_js_call VARCHAR2(100);'||unistr('\000a')||
+'  v_nprogress_js_call VARCHAR2(300);'||unistr('\000a')||
+'  v_nprogress_options VARCHAR2(200);'||unistr('\000a')||
 'BEGIN  '||unistr('\000a')||
-'  IF apex_applic'||
-'ation.g_debug THEN'||unistr('\000a')||
+'  IF apex_application.g_debug THEN'||unistr('\000a')||
 '    apex_plugin_util.debug_dynamic_action(p_plugin         => p_plugin,'||unistr('\000a')||
 '                                          p_dynamic_action => p_dynamic_action);'||unistr('\000a')||
 '  END IF;'||unistr('\000a')||
 '  --'||unistr('\000a')||
 '  -- CSS'||unistr('\000a')||
-'  apex_css.add_file(p_name      => ''nprogress.min'','||unistr('\000a')||
+'  apex_css.add_file(p_name  '||
+'    => ''nprogress.min'','||unistr('\000a')||
 '                    p_directory => p_plugin.file_prefix);'||unistr('\000a')||
 '  --'||unistr('\000a')||
 '  -- JS'||unistr('\000a')||
 '  apex_javascript.add_library(p_name           => ''nprogress.min'','||unistr('\000a')||
-'              '||
-'                p_directory      => p_plugin.file_prefix,'||unistr('\000a')||
+'                              p_directory      => p_plugin.file_prefix,'||unistr('\000a')||
 '                              p_version        => NULL,'||unistr('\000a')||
 '                              p_skip_extension => FALSE);'||unistr('\000a')||
-''||unistr('\000a')||
-'  IF v_start_stop = ''START'' THEN'||unistr('\000a')||
-'    v_nprogress_js_call := ''function() {NProgress.start();}'';'||unistr('\000a')||
+'  '||unistr('\000a')||
+'  v_nprogress_options := ''{ '' ||'||unistr('\000a')||
+'      apex_javas'||
+'cript.add_attribute('||unistr('\000a')||
+'         p_name      => ''showSpinner'','||unistr('\000a')||
+'         p_value     => v_show_spinner,'||unistr('\000a')||
+'     	 p_add_comma => TRUE) ||'||unistr('\000a')||
+'      apex_javascript.add_attribute('||unistr('\000a')||
+'         p_name      => ''parent'','||unistr('\000a')||
+'         p_value     => v_parent_element,'||unistr('\000a')||
+'     	 p_add_comma => FALSE) || '||unistr('\000a')||
+'  ''} '';'||unistr('\000a')||
+'  '||unistr('\000a')||
+'  v_nprogress_options := '||unistr('\000a')||
+'  REPLACE('||unistr('\000a')||
+'  	REPLACE('||unistr('\000a')||
+'    	v_nprogress_options,'||unistr('\000a')||
+'        ''"true"'','||unistr('\000a')||
+'        ''true'''||unistr('\000a')||
+'    '||
+'),'||unistr('\000a')||
+'    ''"false"'','||unistr('\000a')||
+'    ''false'''||unistr('\000a')||
+'  );'||unistr('\000a')||
+'  '||unistr('\000a')||
+'  IF v_start_stop = ''START'' THEN  	'||unistr('\000a')||
+'    v_nprogress_js_call := ''function() { '' ||'||unistr('\000a')||
+'    	''NProgress.configure('' || v_nprogress_options || ''); '' ||'||unistr('\000a')||
+'    	''NProgress.start(); '' ||'||unistr('\000a')||
+'    ''}'';'||unistr('\000a')||
 '  ELSIF v_start_stop = ''STOP'' THEN'||unistr('\000a')||
-'    v_nprogress_js_call := ''function() {NProgress.done();}'';'||unistr('\000a')||
+'    v_nprogress_js_call := ''function() { '' ||'||unistr('\000a')||
+'    	''NProgress.done(); '' ||'||unistr('\000a')||
+'    ''}'';'||unistr('\000a')||
 '  END IF;'||unistr('\000a')||
 '  --'||unistr('\000a')||
-'  l_result.javascript'||
-'_function := v_nprogress_js_call;'||unistr('\000a')||
-'  l_result.attribute_01        := v_start_stop;'||unistr('\000a')||
+'  l_result.javascript_function := v_nprogres'||
+'s_js_call;  '||unistr('\000a')||
 '  --'||unistr('\000a')||
 '  RETURN l_result;'||unistr('\000a')||
 '  --'||unistr('\000a')||
@@ -160,6 +191,54 @@ wwv_flow_api.create_plugin_attr_value (
  ,p_display_sequence => 20
  ,p_display_value => 'Stop'
  ,p_return_value => 'STOP'
+  );
+wwv_flow_api.create_plugin_attribute (
+  p_id => 42061001892933067 + wwv_flow_api.g_id_offset
+ ,p_flow_id => wwv_flow.g_flow_id
+ ,p_plugin_id => 41894918476931639 + wwv_flow_api.g_id_offset
+ ,p_attribute_scope => 'COMPONENT'
+ ,p_attribute_sequence => 2
+ ,p_display_sequence => 20
+ ,p_prompt => 'Show Spinner?'
+ ,p_attribute_type => 'SELECT LIST'
+ ,p_is_required => true
+ ,p_default_value => 'true'
+ ,p_is_translatable => false
+ ,p_depending_on_attribute_id => 41904426676717920 + wwv_flow_api.g_id_offset
+ ,p_depending_on_condition_type => 'EQUALS'
+ ,p_depending_on_expression => 'START'
+  );
+wwv_flow_api.create_plugin_attr_value (
+  p_id => 42061300382933793 + wwv_flow_api.g_id_offset
+ ,p_flow_id => wwv_flow.g_flow_id
+ ,p_plugin_attribute_id => 42061001892933067 + wwv_flow_api.g_id_offset
+ ,p_display_sequence => 10
+ ,p_display_value => 'Yes'
+ ,p_return_value => 'true'
+  );
+wwv_flow_api.create_plugin_attr_value (
+  p_id => 42061732072934277 + wwv_flow_api.g_id_offset
+ ,p_flow_id => wwv_flow.g_flow_id
+ ,p_plugin_attribute_id => 42061001892933067 + wwv_flow_api.g_id_offset
+ ,p_display_sequence => 20
+ ,p_display_value => 'No'
+ ,p_return_value => 'false'
+  );
+wwv_flow_api.create_plugin_attribute (
+  p_id => 42062116329941525 + wwv_flow_api.g_id_offset
+ ,p_flow_id => wwv_flow.g_flow_id
+ ,p_plugin_id => 41894918476931639 + wwv_flow_api.g_id_offset
+ ,p_attribute_scope => 'COMPONENT'
+ ,p_attribute_sequence => 3
+ ,p_display_sequence => 30
+ ,p_prompt => 'Parent Element'
+ ,p_attribute_type => 'TEXT'
+ ,p_is_required => false
+ ,p_default_value => 'body'
+ ,p_is_translatable => false
+ ,p_depending_on_attribute_id => 41904426676717920 + wwv_flow_api.g_id_offset
+ ,p_depending_on_condition_type => 'EQUALS'
+ ,p_depending_on_expression => 'START'
   );
 null;
  
