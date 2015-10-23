@@ -21,3 +21,5 @@ The NProgress plug-in is built with simplicity in mind. It supports just two act
   * Parent Element - Where do you want progress bar to be displayed? Accepts a CSS selector specifying container. e.g. '#myRegion'. Defaults to body.
 
 * Use an NProgress dynamic action with an action of "Stop" in order to complete progress bar animation.
+
+![nprogress preview](https://raw.githubusercontent.com/drumbeg/apex-nprogress/master/nprogress.png)
