@@ -1,7 +1,9 @@
 # apex-nprogress
-Dyanmic action plug-in for Oracle APEX based on NProgress by Rico Sta Cruz.
+Dynamic action plug-in for Oracle APEX based on NProgress by Rico Sta Cruz.
 
 http://ricostacruz.com/nprogress/
+
+Compatible with APEX 4.2 and higher.
 
 ## Installation
 * Import "apex_nprogress_import.sql" via APEX application import.
